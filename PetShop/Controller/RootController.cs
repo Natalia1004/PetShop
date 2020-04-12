@@ -12,17 +12,18 @@ namespace PetShop.Controller
             CustomerController CustomerCon = new CustomerController();
             AccountController AccountCon = new AccountController();
 
-            ViewMain.printWelcome();
 
-            while (ChoiceUser() != "0")
+            ViewMain.printWelcome();
+            string choice = ChoiceUser();
+            while (choice != "0")
             {
 
-                if (ChoiceUser() == "1")
+                if (choice == "1")
                 {
-
-                    Console.WriteLine("nothing");
+                    ShopCartView.printInventory();
+                    break;
                 }
-                else
+                else if (choice == "2")
                 {
                     CustomerCon.insertDataToCustomerTable();
                     AccountCon.insertDataToAccountTable();

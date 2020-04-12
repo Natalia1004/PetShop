@@ -9,7 +9,7 @@ namespace PetShop.DAO
     public class DAOProduct : IDaoPetshop
     {
 
-        private readonly string _tableName = "ProductID";
+        private readonly string _tableName = "Product";
 
 
         public void CreateNewRow(string _tableName, string[] values)
@@ -36,7 +36,7 @@ namespace PetShop.DAO
 
         }
 
-        public List<List<string>> AllProducts(string sql, bool ifHeaders)
+        public static List<List<string>> AllProducts(string sql, bool ifHeaders)
         {
             List<List<string>> data = new List<List<string>>();
 
@@ -74,7 +74,7 @@ namespace PetShop.DAO
 
 
 
-        public List<string> GetHeadersTables(string _tableName)
+        public static List<string> GetHeadersTables(string _tableName)
         {
             string sql = $"SELECT * FROM \"{_tableName}\" WHERE false";
 
