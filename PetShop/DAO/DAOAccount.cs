@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using Npgsql;
+
 
 
 namespace PetShop.DAO
 {
-    public class DAOProduct : IDaoPetshop
+    public class DAOCAccount : IDaoPetshop
     {
 
-        private readonly string _tableName = "ProductID";
+        private readonly string _tableName = "Customer";
 
 
         public void CreateNewRow(string _tableName, string[] values)
         {
-            string sql = $"INSERT INTO \"{_tableName}\" VALUES ({string.Join(',', values)})";
+            string sql = $"INSERT INTO \"{_tableName}\" (\"CustomerID\", \"LoginName\", \"Password\", \"Email\") VALUES ({string.Join(',', values)})";
             ExecuteNonQuery(sql);
         }
 
@@ -26,17 +26,14 @@ namespace PetShop.DAO
 
             using NpgsqlCommand command = new NpgsqlCommand(sql, connection);
             using NpgsqlDataReader rdr = command.ExecuteReader();
-
             while (rdr.Read())
             {
-                Console.WriteLine("{0} {1} {2} {3}", rdr.GetInt32(0), rdr.GetString(1),
-                        rdr.GetInt32(2), rdr.GetInt32(3));
+                Console.WriteLine("{0} {1} {2} {3} {4}", rdr.GetInt32(0), rdr.GetInt32(1),
+                        rdr.GetString(2), rdr.GetString(3), rdr.GetString(4));
             }
-
-
         }
 
-        public List<List<string>> AllProducts(string sql, bool ifHeaders)
+        public List<List<string>> AllCustomers(string sql, bool ifHeaders)
         {
             List<List<string>> data = new List<List<string>>();
 
@@ -56,6 +53,7 @@ namespace PetShop.DAO
                 }
                 data.Add(row);
             }
+
             while (reader.Read())
             {
                 List<string> row = new List<string>();
@@ -71,6 +69,20 @@ namespace PetShop.DAO
             return data;
 
         }
+
+        public static int GetLastID(string tableName)
+        {
+            List<string> data = new List<string>();
+            using NpgsqlConnection connection = CreateNewConnection();
+            connection.Open();
+            string sql = $"SELECT \"CustomerID\" FROM \"{tableName}\" ORDER BY \"CustomerID\" DESC";
+            using NpgsqlCommand command = new NpgsqlCommand(sql, connection);
+            using NpgsqlDataReader reader = command.ExecuteReader();
+            
+            reader.Read();
+            return reader.GetInt32(0);
+        }
+
 
 
 
@@ -93,15 +105,19 @@ namespace PetShop.DAO
 
             return row;
         }
+
+
+
+
         public void UpdateRow(string _tableName, int id, string column, string value)
         {
-            string sql = $"UPDATE \"{_tableName}\" SET \"{column}\" = \'{value}\' WHERE \"ProductID\" = {id}";
+            string sql = $"UPDATE \"{_tableName}\" SET \"{column}\" = \'{value}\' WHERE \"AccountID\" = {id}";
             ExecuteNonQuery(sql);
         }
 
         public void DeleteRow(string _tableName, int id)
         {
-            string sql = $"DELETE FROM \"{_tableName}\" WHERE \"ProductID\" = {id}";
+            string sql = $"DELETE FROM \"{_tableName}\" WHERE \"AccountID\" = {id}";
             ExecuteNonQuery(sql);
         }
 
