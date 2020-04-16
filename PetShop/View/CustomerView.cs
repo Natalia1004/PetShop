@@ -8,29 +8,10 @@ namespace PetShop.View
     public class CustomerView
     { 
 
-        public static void printFirstName()
+        public static void printNameColumn(string NameColumn)
         {
-            Console.Write("First Name: ");
+            Console.Write($"{NameColumn}: ");
         }
-        public static void printLastName()
-        {
-            Console.Write("Last Name: ");
-        }
-        public static void printAddressStreet()
-        {
-            Console.Write("Street: ");
-        }
-        public static void printCity()
-        {
-            Console.Write("City: ");
-        }
-        public static void printCountry()
-        {
-            Console.Write("Country: ");
-        }
-        public static void printZipCode()
-        {
-            Console.Write("ZipCode: ");
-        }
+        
     }
 }

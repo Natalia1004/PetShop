@@ -11,26 +11,35 @@ namespace PetShop.Controller
         {
             CustomerController CustomerCon = new CustomerController();
             AccountController AccountCon = new AccountController();
+            ShopController Shop = new ShopController(0);
 
-
-            ViewMain.printWelcome();
+            MainView.printWelcome();
             string choice = ChoiceUser();
             while (choice != "0")
             {
 
                 if (choice == "1")
                 {
-                    ShopCartView.printInventory();
+                    AccountCon.LogIn();
+                    
+                    while (Shop.Choice != 3)
+                    { 
+                        MainView.printMainPage();
+                        Shop.switchChoiceInShop();
+                    }
                     break;
+                    
                 }
                 else if (choice == "2")
                 {
                     CustomerCon.insertDataToCustomerTable();
                     AccountCon.insertDataToAccountTable();
-                    break;
+                    MainView.printWelcome();
+                    choice = ChoiceUser();
                 }
+                
             }
-            ViewMain.printGoodbay();
+            MainView.printGoodbay();
 
 
         }

@@ -3,6 +3,8 @@ using PetShop.View;
 using PetShop.DAO;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
+using PetShop.Model;
 
 namespace PetShop.Controller
 {
@@ -10,40 +12,46 @@ namespace PetShop.Controller
     {
         DAOCustomer Customer = new DAOCustomer();
 
-        private string[] saveDataCustomer()
+
+
+        private string[] CreateRowCustomer()
         {
             string[] detailsOfCustomer = new string[6];
-
-            CustomerView.printFirstName();
-            string FirstName = Console.ReadLine();
-            detailsOfCustomer[0] = "'" + FirstName + "'";
-
-            CustomerView.printLastName();
-            string LastName = Console.ReadLine();
-            detailsOfCustomer[1] = "'" + LastName + "'";
-
-            CustomerView.printAddressStreet();
-            string AddressStreet = Console.ReadLine();
-            detailsOfCustomer[2] = "'" + AddressStreet + "'";
-
-            CustomerView.printCity();
-            string City = Console.ReadLine();
-            detailsOfCustomer[3] = "'" + City + "'";
-
-            CustomerView.printCountry();
-            string Country = Console.ReadLine();
-            detailsOfCustomer[4] = "'" + Country + "'";
-
-            CustomerView.printZipCode();
-            string ZipCode = Console.ReadLine();
-            detailsOfCustomer[5] = "'" + ZipCode + "'";
-
+            detailsOfCustomer[0] = saveDataCustomer("First Name");
+            detailsOfCustomer[1] = saveDataCustomer("Last Name");
+            detailsOfCustomer[2] = saveDataCustomer("AddressStreet");
+            detailsOfCustomer[3] = saveDataCustomer("City");
+            detailsOfCustomer[4] = saveDataCustomer("Country");
+            detailsOfCustomer[5] = saveDataCustomer("ZipCode");
             return detailsOfCustomer;
+        }
+
+        private string saveDataCustomer(string data)
+        {
+            CustomerView.printNameColumn(data);
+            string dataOfCustomer = Console.ReadLine();
+            if (checkCorrectInput(dataOfCustomer, data) == false)
+            {
+                Console.WriteLine("Wrong input. Try again!");
+                saveDataCustomer(data);
+            }
+            string dataToTableCustomer = "'" + dataOfCustomer + "'";
+            return dataToTableCustomer;
+        }
+        private bool checkCorrectInput(string input, string data)
+        {
+            bool resultOfCorrectData = false;
+            if (data == "AddressStreet" || data == "Country" || data == "City")
+            {resultOfCorrectData = Regex.IsMatch(input, @"^[\p{L} ]+$"); }
+            else if (data == "First Name" || data == "Last Name")
+            {resultOfCorrectData = Regex.IsMatch(input, @"^[\p{L}]+$"); }
+            else {resultOfCorrectData = Regex.IsMatch(input, @"^[0-9]+$"); };
+            return resultOfCorrectData;
         }
 
         public void insertDataToCustomerTable()
         {
-            Customer.CreateNewRow("Customer", saveDataCustomer());
+            Customer.CreateNewRow("Customer", CreateRowCustomer());
         }
 
     }

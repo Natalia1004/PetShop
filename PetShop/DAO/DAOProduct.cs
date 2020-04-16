@@ -71,6 +71,26 @@ namespace PetShop.DAO
             return data;
 
         }
+        public List<string> GetProductByID(int ID)
+        {
+
+            using NpgsqlConnection connection = CreateNewConnection();
+            connection.Open();
+            string sql = $"SELECT * FROM \"Product\" WHERE \"ProductID\" = {ID} ";
+            using NpgsqlCommand command = new NpgsqlCommand(sql, connection);
+            using NpgsqlDataReader reader = command.ExecuteReader();
+
+            int fieldCount = reader.FieldCount;
+
+            List<string> row = new List<string>();
+            while (reader.Read())
+            {
+                for (int i = 0; i < fieldCount; i++)
+                row.Add(reader[i].ToString());
+            }
+            return row;
+
+        }
 
 
 

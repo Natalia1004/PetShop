@@ -6,7 +6,7 @@ using Npgsql;
 
 namespace PetShop.DAO
 {
-    public class DAOCAccount : IDaoPetshop
+    public class DAOAccount : IDaoPetshop
     {
 
         private readonly string _tableName = "Customer";
@@ -83,7 +83,18 @@ namespace PetShop.DAO
             return reader.GetInt32(0);
         }
 
+        public static int GetCustomerID(string UserName, string password)
+        {
+            using NpgsqlConnection connection = CreateNewConnection();
+            connection.Open();
+            string sql = $"SELECT \"CustomerID\" FROM \"Account\" WHERE \"LoginName\" LIKE \'{UserName}\' AND \"Password\" LIKE \'{password}\'";
+            using NpgsqlCommand command = new NpgsqlCommand(sql, connection);
+            Int32 reader = Convert.ToInt32(command.ExecuteScalar());
 
+            return reader;
+        }
+
+       
 
 
         public List<string> GetHeadersTables(string _tableName)
@@ -129,7 +140,7 @@ namespace PetShop.DAO
             using NpgsqlCommand command = new NpgsqlCommand(sql, connection);
             command.ExecuteNonQuery();
         }
-        private static NpgsqlConnection CreateNewConnection()
+        public static NpgsqlConnection CreateNewConnection()
         {
             string accessConnection = "Host=localhost;Username=nataliafilipek;Password=postgres;Database=petshop";
             NpgsqlConnection connection = new NpgsqlConnection(accessConnection);

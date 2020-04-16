@@ -9,19 +9,10 @@ namespace PetShop.View
     public class AccountView
     {
 
-        public static void printUserLogin()
+        public static void printAccountDetails(string data)
         {
-            Console.Write("Login: ");
+            Console.Write($"{data}: ");
         }
-        public static void printPassword()
-        {
-            Console.Write("Password: ");
-        }
-        public static void printEmail()
-        {
-            Console.Write("Email: ");
-        }
-
 
     }
 }

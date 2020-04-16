@@ -20,6 +20,12 @@ namespace PetShop.View
             }
             printTable.Write();
         }
+        public static void SoppingAddProduct()
+        {
+            Console.WriteLine("Do You want to add some product to basket?");
+            Console.WriteLine("Select Product from list enter ProductID and quntity!");
+            
+        }
 
     }
 }
