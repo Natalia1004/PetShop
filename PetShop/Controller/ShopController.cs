@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using PetShop.View;
+using PetShop.Model;
 
 namespace PetShop.Controller
 {
@@ -49,7 +50,7 @@ namespace PetShop.Controller
                         }
                         else
                         {
-                            basket.addProductToBasket(IdProduct);
+                            basket.AddProductToBasket(IdProduct);
                             break;
                         }
                     }
@@ -58,10 +59,39 @@ namespace PetShop.Controller
                 else if(choiceUser ==3)
                 {
                     basket.printBasket();
+                    Console.WriteLine("It is your basket.");
+                    Console.WriteLine("1) You may remove product \n 2)Buy");
+
+                    if (backToMenu() == "q")
+                    {
+                        choiceUser = 0;
+                        continue;
+                    }
+                    else
+                    {
+                        string choice = Console.ReadLine();
+                        if (choice == "1")
+                        {
+                            Console.WriteLine("Which product do you want remove?");
+                            string removeProduct = Console.ReadLine();
+
+                            basket.startRemoveProduct(removeProduct);
+                            choiceUser = 3;
+                            continue;
+                            
+                        }
+                        else
+                        {
+                            Console.WriteLine("Create new order");
+                        }
+                    }
+
+                    break;
                 }
                 
                 else if (choiceUser == 4)
                 {
+                    choiceUser = 0;
                     break;
                 }
 

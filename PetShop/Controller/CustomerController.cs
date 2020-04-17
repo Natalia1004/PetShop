@@ -13,17 +13,24 @@ namespace PetShop.Controller
         DAOCustomer Customer = new DAOCustomer();
 
 
-
-        private string[] CreateRowCustomer()
+        public Customer CreateCustomer()
         {
-            string[] detailsOfCustomer = new string[6];
-            detailsOfCustomer[0] = saveDataCustomer("First Name");
-            detailsOfCustomer[1] = saveDataCustomer("Last Name");
-            detailsOfCustomer[2] = saveDataCustomer("AddressStreet");
-            detailsOfCustomer[3] = saveDataCustomer("City");
-            detailsOfCustomer[4] = saveDataCustomer("Country");
-            detailsOfCustomer[5] = saveDataCustomer("ZipCode");
-            return detailsOfCustomer;
+            Customer customer = new Customer();
+            customer.FirstName = saveDataCustomer("First Name");
+            customer.LastName = saveDataCustomer("Last Name");
+            customer.AddressStreet = saveDataCustomer("AddressStreet");
+            customer.City = saveDataCustomer("City");
+            customer.Country = saveDataCustomer("Country");
+            customer.ZipCode = saveDataCustomer("ZipCode");
+            return customer;
+        }
+
+        private string[] CreateRowCustomer(Customer customer)
+        {
+            string[] customerDetails = new string[6] {customer.FirstName,customer.LastName,
+                                                      customer.AddressStreet, customer.City,
+                                                        customer.Country, customer.ZipCode};
+            return customerDetails;
         }
 
         private string saveDataCustomer(string data)
@@ -51,7 +58,8 @@ namespace PetShop.Controller
 
         public void insertDataToCustomerTable()
         {
-            Customer.CreateNewRow("Customer", CreateRowCustomer());
+          
+            Customer.CreateNewRow("Customer", CreateRowCustomer(CreateCustomer()));
         }
 
     }

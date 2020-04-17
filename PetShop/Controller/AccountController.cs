@@ -20,7 +20,7 @@ namespace PetShop.Controller
 
             try
             {
-                Account.CreateNewRow("Account", CreateRowAccount());
+                Account.CreateNewRow("Account", CreateRowAccount(CreateNewAccount()));
             }
             catch (NpgsqlException e)
             {
@@ -29,14 +29,22 @@ namespace PetShop.Controller
             }
         }
 
-        private string[] CreateRowAccount()
+        private Account CreateNewAccount()
         {
-            string[] detailsOfAccount = new string[4];
-            detailsOfAccount[0] = DAOAccount.GetLastID("Customer").ToString();
-            detailsOfAccount[1] = saveDataAccountLogin("Login");
-            detailsOfAccount[2] = saveDataAccountPassword("Password");
-            detailsOfAccount[3] = saveDataAccountEmail("Email");
+            Account account = new Account();
+            
+            account.CustomerID = DAOAccount.GetLastID("Customer");
+            account.Login = saveDataAccountLogin("Login");
+            account.Password = saveDataAccountPassword("Password");
+            account.Email = saveDataAccountEmail("Email");
 
+            return account;
+        }
+
+        private string [] CreateRowAccount(Account account)
+        {
+            string[] detailsOfAccount = new string[4] {Convert.ToString(account.CustomerID), account.Login,
+                                                        account.Password, account.Email};
             return detailsOfAccount;
         }
         private string saveDataAccountLogin(string data)
