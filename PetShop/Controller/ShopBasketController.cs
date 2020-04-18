@@ -36,6 +36,7 @@ namespace PetShop.Controller
                     if (Basket.ProductName == row.ProductName)
                     {
                         row.Quantity = row.Quantity + 1;
+                        row.PriceProduct = Basket.PriceProduct * row.Quantity;
                         return basket;
                     }
                 }

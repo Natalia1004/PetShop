@@ -47,6 +47,23 @@ namespace PetShop.Controller
         private static string ChoiceUser()
         {
             string answer = Console.ReadLine();
+
+            List<string> ValidAnswers = new List<string>() { "1", "2", "0" };
+            while (!ValidAnswers.Contains(answer))
+                try
+                {
+                    answer = Console.ReadLine();
+                    if (!ValidAnswers.Contains(answer)) throw new ArgumentException();
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Wrong input.Please enter a value '1', '2' or '0'.");
+
+                }
+                catch (ArgumentException)
+                {
+                    Console.WriteLine("Please enter number from range 0-2");
+                }
             return answer;
         }
     }

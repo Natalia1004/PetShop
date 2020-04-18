@@ -60,7 +60,7 @@ namespace PetShop.Controller
                 {
                     basket.printBasket();
                     Console.WriteLine("It is your basket.");
-                    Console.WriteLine("1) You may remove product \n 2)Buy");
+                    Console.WriteLine("1) You may remove product \n2)Buy");
 
                     if (backToMenu() == "q")
                     {
