@@ -83,7 +83,20 @@ namespace PetShop.Controller
                 printTable.AddRow(row.ProductName, row.PriceProduct, row.Quantity);
             }
             printTable.Write();
+            int price = TotalPrice(basket);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"\nTotal price {price}");
             Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        public int TotalPrice(List<ShoppingBasket> basket)
+        {
+            int totalPrice = 0;
+            foreach (ShoppingBasket row in basket)
+            {
+                totalPrice += row.PriceProduct;
+            }
+            return totalPrice;
         }
 
 
