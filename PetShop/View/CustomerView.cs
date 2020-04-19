@@ -6,12 +6,12 @@ namespace PetShop.View
 
 {
     public class CustomerView
-    { 
+    {
 
         public static void printNameColumn(string NameColumn)
         {
             Console.Write($"{NameColumn}: ");
         }
-        
+
     }
 }

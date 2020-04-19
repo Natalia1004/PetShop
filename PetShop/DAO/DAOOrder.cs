@@ -2,130 +2,72 @@
 using System.Collections.Generic;
 using System.Configuration;
 using Npgsql;
+using PetShop.Model;
 
 
 namespace PetShop.DAO
 {
-    public class DAOOrder : IDaoPetshop
+    public class DAOOrder : IOrderDAO
     {
+        Order order;
+        List<Order> OrdersList;
 
-        private readonly string _tableName = "Order";
-
-
-        public void CreateNewRow(string _tableName, string[] values)
+        public void CreateNewRow(Order order)
         {
-            string sql = $"INSERT INTO \"{_tableName}\" VALUES ({string.Join(',', values)})";
-            ExecuteNonQuery(sql);
+            string sql = $"INSERT INTO \"Order\" (\"CustomerID\", \"LoginName\", \"ProductID\", \"TotalSum\") VALUES ({order.CustomerID},{order.ProductID}, {order.TotalSum})";
+            CommonDAO.ExecuteNonQuery(sql);
         }
 
-        public void GetAllRows(string _tableName)
+        public void DeleteRow(int id)
         {
-            using NpgsqlConnection connection = CreateNewConnection();
-            connection.Open();
-            string sql = $"SELECT * FROM \"{_tableName}\"";
-
-            using NpgsqlCommand command = new NpgsqlCommand(sql, connection);
-            using NpgsqlDataReader rdr = command.ExecuteReader();
-
-            while (rdr.Read())
-            {
-                Console.WriteLine("{0} {1} {2} {3} {4} {5}", rdr.GetInt32(0), rdr.GetString(1),
-                        rdr.GetString(2), rdr.GetString(3), rdr.GetInt32(4), rdr.GetInt32(5));
-            }
-
-
+            string sql = $"DELETE FROM \"Order\" WHERE \"OrderID\" = {id}";
+            CommonDAO.ExecuteNonQuery(sql);
         }
-        public List<List<string>> AllOrders(string sql, bool ifHeaders)
-        {
-            List<List<string>> data = new List<List<string>>();
 
-            using NpgsqlConnection connection = CreateNewConnection();
+
+        public void UpdateRow(int id, string column, string value)
+        {
+            string sql = $"UPDATE \"Order\" SET \"{column}\" = \'{value}\' WHERE \"OrderID\" = {id}";
+            CommonDAO.ExecuteNonQuery(sql);
+        }
+
+        public List<Order> GetAllRows()
+        {
+            List<Order> dataAccount = new List<Order>();
+
+            using NpgsqlConnection connection = CommonDAO.CreateNewConnection();
             connection.Open();
 
+            string sql = $"SELECT * FROM \"Order\"";
             using NpgsqlCommand command = new NpgsqlCommand(sql, connection);
             using NpgsqlDataReader reader = command.ExecuteReader();
 
             int countOfData = reader.FieldCount;
-            if (ifHeaders)
-            {
-                List<string> row = new List<string>();
-                for (int i = 0; i < countOfData; i++)
-                {
-                    row.Add(reader.GetName(i));
-                }
-                data.Add(row);
-            }
+
             while (reader.Read())
             {
-                List<string> row = new List<string>();
-                for (int i = 0; i < countOfData; i++)
-                {
-                    if (reader.GetPostgresType(i).Name == "integer")
-                        row.Add($"{reader.GetInt32(i)}");
-                    else if (reader.GetPostgresType(i).Name == "Date") row.Add($"{reader.GetDate(i)}");
-                    else row.Add(reader.GetString(i));
-                }
-                data.Add(row);
+                Order order = new Order(Convert.ToInt32(reader[0]), Convert.ToInt32(reader[1]), Convert.ToString(reader[2]), Convert.ToInt32(reader[3]));
+                dataAccount.Add(order);
             }
-            return data;
+
+            return dataAccount;
 
         }
 
 
-
-        public List<string> GetHeadersTables(string _tableName)
+        public void printAllRows()
         {
-            string sql = $"SELECT * FROM \"{_tableName}\" WHERE false";
-
-            using NpgsqlConnection connection = CreateNewConnection();
+            using NpgsqlConnection connection = CommonDAO.CreateNewConnection();
             connection.Open();
+            string sql = $"SELECT * FROM \"Order\"";
 
             using NpgsqlCommand command = new NpgsqlCommand(sql, connection);
-            using NpgsqlDataReader reader = command.ExecuteReader();
-            int fieldCount = reader.FieldCount;
-
-            List<string> row = new List<string>();
-            for (int i = 0; i < fieldCount; i++)
+            using NpgsqlDataReader rdr = command.ExecuteReader();
+            while (rdr.Read())
             {
-                row.Add(reader.GetName(i));
+                Console.WriteLine("{0} {1} {2} {3} ", rdr.GetInt32(0), rdr.GetInt32(1),
+                        rdr.GetString(2), rdr.GetInt32(3));
             }
-
-            return row;
         }
-        public void UpdateRow(string _tableName, int id, string column, string value)
-        {
-            string sql = $"UPDATE \"{_tableName}\" SET \"{column}\" = \'{value}\' WHERE \"OrderID\" = {id}";
-            ExecuteNonQuery(sql);
-        }
-
-        public void DeleteRow(string _tableName, int id)
-        {
-            string sql = $"DELETE FROM \"{_tableName}\" WHERE \"OrderID\" = {id}";
-            ExecuteNonQuery(sql);
-        }
-        
-
-        private static void ExecuteNonQuery(string sql)
-        {
-            using NpgsqlConnection connection = CreateNewConnection();
-            connection.Open();
-
-            using NpgsqlCommand command = new NpgsqlCommand(sql, connection);
-            command.ExecuteNonQuery();
-        }
-        private static NpgsqlConnection CreateNewConnection()
-        {
-            string accessConnection = "Host=localhost;Username=nataliafilipek;Password=postgres;Database=petshop";
-            NpgsqlConnection connection = new NpgsqlConnection(accessConnection);
-            return connection;
-
-        }
-
-
     }
-
-
-
-
-
 }

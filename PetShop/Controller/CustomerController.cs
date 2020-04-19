@@ -10,27 +10,21 @@ namespace PetShop.Controller
 {
     public class CustomerController
     {
-        DAOCustomer Customer = new DAOCustomer();
+
+        public DAOCustomer CustomerConn = new DAOCustomer();
 
 
         public Customer CreateCustomer()
         {
-            Customer customer = new Customer();
-            customer.FirstName = saveDataCustomer("First Name");
-            customer.LastName = saveDataCustomer("Last Name");
-            customer.AddressStreet = saveDataCustomer("AddressStreet");
-            customer.City = saveDataCustomer("City");
-            customer.Country = saveDataCustomer("Country");
-            customer.ZipCode = saveDataCustomer("ZipCode");
-            return customer;
-        }
+            string FirstName = saveDataCustomer("First Name");
+            string LastName = saveDataCustomer("Last Name");
+            string AddressStreet = saveDataCustomer("AddressStreet");
+            string City = saveDataCustomer("City");
+            string Country = saveDataCustomer("Country");
+            string ZipCode = saveDataCustomer("ZipCode");
+            Customer customer = new Customer(0, FirstName, LastName, AddressStreet, City, Country, ZipCode);
 
-        private string[] CreateRowCustomer(Customer customer)
-        {
-            string[] customerDetails = new string[6] {customer.FirstName,customer.LastName,
-                                                      customer.AddressStreet, customer.City,
-                                                        customer.Country, customer.ZipCode};
-            return customerDetails;
+            return customer;
         }
 
         private string saveDataCustomer(string data)
@@ -42,24 +36,26 @@ namespace PetShop.Controller
                 Console.WriteLine("Wrong input. Try again!");
                 saveDataCustomer(data);
             }
+            
             string dataToTableCustomer = "'" + dataOfCustomer + "'";
             return dataToTableCustomer;
         }
+
         private bool checkCorrectInput(string input, string data)
         {
             bool resultOfCorrectData = false;
             if (data == "AddressStreet" || data == "Country" || data == "City")
-            {resultOfCorrectData = Regex.IsMatch(input, @"^[\p{L} ]+$"); }
+            { resultOfCorrectData = Regex.IsMatch(input, @"^[\p{L} ]+$"); }
             else if (data == "First Name" || data == "Last Name")
-            {resultOfCorrectData = Regex.IsMatch(input, @"^[\p{L}]+$"); }
-            else {resultOfCorrectData = Regex.IsMatch(input, @"^[0-9]+$"); };
+            { resultOfCorrectData = Regex.IsMatch(input, @"^[\p{L}]+$"); }
+            else { resultOfCorrectData = Regex.IsMatch(input, @"^[0-9]+$"); };
             return resultOfCorrectData;
         }
 
         public void insertDataToCustomerTable()
         {
-          
-            Customer.CreateNewRow("Customer", CreateRowCustomer(CreateCustomer()));
+
+            CustomerConn.CreateNewRow(CreateCustomer());
         }
 
     }

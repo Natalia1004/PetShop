@@ -10,6 +10,7 @@ namespace PetShop.Controller
         public int Choice { get; set; }
         ProductController productController = new ProductController();
         ShopBasketController basket = new ShopBasketController();
+        OrderController order = new OrderController();
         
         public ShopController(int choice)
         {
@@ -82,11 +83,15 @@ namespace PetShop.Controller
                         }
                         else
                         {
-                            Console.WriteLine("Create new order");
+                            order.AddOrderToDatabase();
+                            Console.WriteLine("Thanks for your order. See you soon!");
+                            continue;
                         }
+                       
                     }
+                    
 
-                    break;
+                    
                 }
                 
                 else if (choiceUser == 4)

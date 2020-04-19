@@ -6,16 +6,17 @@ namespace PetShop.Model
        
         public int ProductID { get; set; }
         public string ProductName { get; set; }
-        public int Price { get; set; }
         public int Quantity { get; set; }
+        public int Price { get; set; }
+        
        
-
-        public Product(int productID, string productName, int quantity, int price)
+        public Product(int productID, string name, int quantity, int price)
         {
             ProductID = productID;
-            ProductName = productName;
+            ProductName = name;
             Quantity = quantity;
             Price = price;
+            
         }
     }
 }

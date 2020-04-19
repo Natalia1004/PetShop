@@ -10,6 +10,14 @@ namespace PetShop.Model
         public string Password { get; set; }
         public string Email { get; set; }
 
+        public Account(int accountID, int customerID, string login, string password, string email)
+        {
+            AccountID = accountID;
+            CustomerID = customerID;
+            Login = login;
+            Password = password;
+            Email = email;
+        }
     }
 
 }

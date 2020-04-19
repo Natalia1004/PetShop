@@ -14,13 +14,14 @@ namespace PetShop.Controller
     public class AccountController
     {
         DAOAccount Account = new DAOAccount();
+        Customer customer;
 
         public void insertDataToAccountTable()
         {
 
             try
             {
-                Account.CreateNewRow("Account", CreateRowAccount(CreateNewAccount()));
+                Account.CreateNewRow(CreateNewAccount());
             }
             catch (NpgsqlException e)
             {
@@ -31,22 +32,14 @@ namespace PetShop.Controller
 
         private Account CreateNewAccount()
         {
-            Account account = new Account();
-            
-            account.CustomerID = DAOAccount.GetLastID("Customer");
-            account.Login = saveDataAccountLogin("Login");
-            account.Password = saveDataAccountPassword("Password");
-            account.Email = saveDataAccountEmail("Email");
-
+            int CustomerID = Account.GetLastID();
+            string Login = saveDataAccountLogin("Login");
+            string Password = saveDataAccountPassword("Password");
+            string Email = saveDataAccountEmail("Email");
+            Account account = new Account(0, CustomerID, Login, Password, Email);
             return account;
         }
 
-        private string [] CreateRowAccount(Account account)
-        {
-            string[] detailsOfAccount = new string[4] {Convert.ToString(account.CustomerID), account.Login,
-                                                        account.Password, account.Email};
-            return detailsOfAccount;
-        }
         private string saveDataAccountLogin(string data)
         {
             AccountView.printAccountDetails(data);
@@ -94,23 +87,13 @@ namespace PetShop.Controller
             }
             else
             {
-                string CustomerName = returnCustomerName(CustomerID);
+                string CustomerName = customer.FirstName;
                 Console.Write("\n");
                 Console.WriteLine($"\nHello {CustomerName} in our shop. Now You may buy want You need :)\n");
             }
 
         }
-        private static string returnCustomerName(int CustomerID)
-        {
-            using NpgsqlConnection connection = DAOAccount.CreateNewConnection();
-            connection.Open();
-            string sql = $"SELECT \"FirstName\" FROM \"Customer\" WHERE \"CustomerID\" = {CustomerID}";
-            using NpgsqlCommand command = new NpgsqlCommand(sql, connection);
-            using NpgsqlDataReader reader = command.ExecuteReader();
-            reader.Read();
-
-            return reader.GetString(0);
-        }
+        
 
         private SecureString GetPassword()
         {
@@ -154,4 +137,3 @@ namespace PetShop.Controller
 
     }
 }
- 

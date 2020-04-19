@@ -20,6 +20,7 @@ namespace PetShop.Controller
             ShoppingBasket Basket = new ShoppingBasket();
             List<string> purchaseProdcut = productFromDB.GetProductByID(Id);
             Product product = new Product(Convert.ToInt32(purchaseProdcut[0]), purchaseProdcut[1], Convert.ToInt32(purchaseProdcut[2]), Convert.ToInt32(purchaseProdcut[3]));
+            Basket.ProductID = product.ProductID;
             Basket.ProductName = product.ProductName;
             Basket.PriceProduct = product.Price;
             Basket.Quantity = 1;
@@ -124,6 +125,7 @@ namespace PetShop.Controller
         {
             removeProductToBasket(nameProductToRemove, basket);
         }
+
         
         
     }

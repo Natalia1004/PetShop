@@ -5,21 +5,15 @@ namespace PetShop.Model
     {
         public int OrderID { get; set; }
         public int CustomerID { get; set; }
-        public int ProductID { get; set; }
-        public DateTime ShipDate { get; set; }
-        public int TotalSumOrder { get; set; }
-        public int Quantity { get; set; }
-
-        public Order(int orderID, int customerID, int productID, DateTime shipDate, int totalPrice, int quantity)
+        public string ProductID { get; set; }
+        public int TotalSum { get; set; }
+        
+        public Order(int orderID, int customerID, string productID, int totalSumOrder)
         {
             OrderID = orderID;
             CustomerID = customerID;
             ProductID = productID;
-            ShipDate = shipDate;
-            TotalSumOrder = totalPrice;
-            Quantity = quantity;
-
+            TotalSum = totalSumOrder;
         }
-        
     }
 }

@@ -33,7 +33,7 @@ namespace PetShop.View
             string textShop = "Select one of the following!";
             Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (textShop.Length / 2)) + "}", textShop));
             Console.ForegroundColor = ConsoleColor.DarkGray;
-            var printTable = new ConsoleTable("(1)Story shop", "(2)List of Products", "(3) Basket","(4)Quit");
+            var printTable = new ConsoleTable("(1)Story shop", "(2)List of Products", "(3) Basket", "(4)Quit");
             printTable.Write();
             Console.ForegroundColor = ConsoleColor.White;
 
